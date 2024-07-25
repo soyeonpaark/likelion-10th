@@ -2,7 +2,7 @@
 
 import liveServer from 'live-server';
 
-const parmas = {
+const params = {
   host: 'localhost',
   port: 3000,
   open: false,
