@@ -1,55 +1,53 @@
-import { typeIs } from './typeIs';
+import { typeOf } from './typeOf';
 
-export const generateCheckType = (type) => (props, propName, componentName) => {
+const generateTypeValidation =
+  (allowedType) => (props, propName, componentName) => {
+    const propValue = props[propName];
+    const propType = typeOf(propValue);
+
+    if (propType !== allowedType) {
+      throw new Error(
+        `${componentName} 컴포넌트 ${propName} 속성 타입은 "${allowedType}" 타입이 요구되나, 실제 전달된 타입은 "${propType}"입니다.`
+      );
+    }
+  };
+
+export const string = generateTypeValidation('string');
+export const number = generateTypeValidation('number');
+export const bool = generateTypeValidation('boolean');
+export const symbol = generateTypeValidation('symbol');
+export const func = generateTypeValidation('function');
+export const array = generateTypeValidation('array');
+export const object = generateTypeValidation('object');
+
+export const oneOf = (types) => (props, propName, componentName) => {
   const propValue = props[propName];
-  const propType = typeIs(propValue);
-  const allowedType = type;
+  const propType = typeOf(propValue);
+  const allowedType = 'string';
 
-  if (propType !== allowedType) {
+  const typeMatchString = types.reduce((result, type, index, array) => {
+    const divider = index < array.length - 1 ? '|' : '';
+    return result + type + divider;
+  }, '');
+
+  const typeMatch = new RegExp(`^(${typeMatchString})$`, 'i');
+
+  if (propType !== allowedType || !typeMatch.test(propValue)) {
     throw new Error(
-      `${componentName} 컴포넌트 ${propName} 속성에 전달 가능한 데이터 타입은 "${allowedType}"이지만, 전달된 타입은 "${propType}"입니다.`
+      `${componentName} 컴포넌트 ${propName} 속성에 설정 가능한 값은 "[${types.toString()}]" 중 하나가 요구되나, 실제 전달된 속성 값은 "${propValue}"입니다.`
     );
   }
 };
 
-export const number = generateCheckType('number');
-export const string = generateCheckType('string');
-export const bool = generateCheckType('boolean');
-export const symbol = generateCheckType('symbol');
-export const func = generateCheckType('function');
-export const object = generateCheckType('object');
-export const array = generateCheckType('array');
-
-export const arrayOf = (list) => {
-  return (props, propName, componentName) => {
-    const propValue = props[propName];
-    const propType = typeIs(propValue);
-
-    const types = list.reduce(
-      (types, type, index, list) =>
-        types + type + (index < list.length - 1 ? '|' : ''),
-      ''
-    );
-
-    const matches = new RegExp(`^(${types})$`, 'i');
-
-    if (propType !== 'string' || !matches.test(propValue)) {
-      throw new Error(
-        `${componentName} 컴포넌트 ${propName} 속성에 전달 가능한 데이터 값은 "[${list.toString()}]"이지만, 전달된 값은 "${propValue}"입니다.`
-      );
-    }
-  };
-};
-
 const PropTypes = Object.freeze({
-  number,
   string,
+  number,
   bool,
   symbol,
   func,
-  object,
   array,
-  arrayOf,
+  object,
+  oneOf,
 });
 
 export default PropTypes;

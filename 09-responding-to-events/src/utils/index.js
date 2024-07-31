@@ -1,3 +1,3 @@
-export * from './typeIs';
+export * from './typeOf';
 export * from './randomNumber';
-export { default as PropTypes } from './propTypes';
+export { default as PropTypes } from './PropTypes';
