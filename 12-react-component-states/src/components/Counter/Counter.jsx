@@ -24,7 +24,6 @@ Counter.propTypes = {
 
 /**@type {({ count?: number, step?: number, min?: number, max?: number }) => JSX.Element} */
 function Counter({ count: initialCount = 1, step = 1, min = 1, max = 1000 }) {
-  // only state
   // 참고: https://react.dev/reference/react/useState#usestate
   const [count, setCount] = useState(() => {
     if (initialCount < min || initialCount > max) {
