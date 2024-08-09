@@ -11,7 +11,12 @@
 // --------------------------------------------------------------------------
 
 import { useState } from 'react';
-import { checkeWinner, INITIAL_SQUARES, PLAYER, PLAYER_COUNT } from './constants';
+import {
+  checkeWinner,
+  INITIAL_SQUARES,
+  PLAYER,
+  PLAYER_COUNT,
+} from './constants';
 import History from './components/History/History';
 import Board from './components/Board/Board';
 import S from './Game.module.css';
@@ -39,9 +44,8 @@ function Game() {
       return;
     }
 
-
     // 다음 게임의 인덱스는? -----------------------------------------------
-    
+
     const nextGameIndex = gameIndex + 1;
 
     // 다음 게임 인덱스 상태 업데이트 요청
@@ -66,11 +70,22 @@ function Game() {
 
     // [ [null, ..., null] ]
     // [ [null, ..., null], ['one', ..., null] ]
-    const nextGameHistory = [...gameHistory, nextSquares];
+    // 게임의 히스토리(기억) 또한 되돌려야 함
+    // 선택된 게임의 인덱스 정보를 사용해 게임 히스토리를 잘라야 한다.
+    const nextGameHistory = [
+      ...gameHistory.slice(0, nextGameIndex),
+      nextSquares,
+    ];
 
     setGameHistory(nextGameHistory);
 
     // ---------------------------------------------------------------
+  };
+
+  // 시간 여행 기능(함수)
+  const handleTimeTravel = (index) => {
+    // 되돌리고 싶은 시간의 기억으로 게임 인덱스를 업데이트 요청
+    setGameIndex(index);
   };
 
   // [게임 파생된 상태] ----------------------------------------------------------
@@ -91,7 +106,8 @@ function Game() {
 
   // 현재 게임 플레이어 ([0] PLAYER.ONE ↔ [1] PLAYER.TWO)
   // 첫번째 플레이어의 턴인가요?
-  const isPlayerOneTurn = currentSquares.filter(Boolean).length % PLAYER_COUNT === 0; // true
+  const isPlayerOneTurn =
+    currentSquares.filter(Boolean).length % PLAYER_COUNT === 0; // true
   // 첫번째 플레이어의 턴이면 PLAYER.ONE 아니면 PLAYER.TWO
   const nextPlayer = isPlayerOneTurn ? PLAYER.ONE : PLAYER.TWO; // '🍟'
 
@@ -105,11 +121,13 @@ function Game() {
         squares={currentSquares}
         winnerInfo={winnerInfo}
         nextPlayer={nextPlayer}
-        onPlay={handlePlayGame} 
+        onPlay={handlePlayGame}
         isDraw={isDraw}
       />
       <History
-        gameHistory={gameHistory} 
+        onTimeTravel={handleTimeTravel}
+        gameHistory={gameHistory}
+        gameIndex={gameIndex}
       />
     </div>
   );
