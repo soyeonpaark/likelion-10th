@@ -6,9 +6,10 @@
   position: relative;
 
   ul {
+    overflow: auto;
+    scroll-snap-type: y mandatory;
     margin: 0;
     padding-inline-start: 0;
-    overflow: auto;
     block-size: inherit;
     inline-size: inherit;
   }

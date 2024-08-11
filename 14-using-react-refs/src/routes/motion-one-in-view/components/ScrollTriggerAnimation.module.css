@@ -1,4 +1,6 @@
 .component {
+  overflow: auto;
+  scroll-snap-type: y mandatory;
   position: absolute;
   top: 0;
   left: 200px;
