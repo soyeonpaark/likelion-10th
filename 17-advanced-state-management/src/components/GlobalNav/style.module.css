@@ -1,7 +1,7 @@
 .component {
   overflow: auto;
   resize: horizontal;
-  min-inline-size: 160px;
+  min-inline-size: 168px;
   max-inline-size: 320px;
   min-block-size: 94vh;
   margin-block-start: 1vh;
