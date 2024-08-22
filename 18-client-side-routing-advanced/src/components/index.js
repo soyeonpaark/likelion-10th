@@ -1,5 +1,6 @@
 export { default as AppSpinner } from './AppSpinner.jsx';
 export { default as AppDivider } from './AppDivider.jsx';
+export { default as AppNavLink } from './AppNavLink.jsx';
 export { default as AppHeader } from './AppHeader.jsx';
 export { default as AppFooter } from './AppFooter.jsx';
 export { default as AppButton } from './AppButton.jsx';

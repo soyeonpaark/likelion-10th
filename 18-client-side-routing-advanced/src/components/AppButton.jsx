@@ -52,7 +52,7 @@ function AppButton({
       <button
         type={type}
         className={clsx(
-          'opacity-90 hover:opacity-100 flex gap-2 items-center justify-center rounded-full bg-accent text-white text-sm font-semibold px-6 py-1.5 border-0 disabled:bg-slate-500',
+          'opacity-90 hover:opacity-100 flex gap-2 items-center justify-center rounded-full bg-accent text-white text-sm font-semibold px-6 py-2 border-0 disabled:bg-slate-500',
           buttonClassName
         )}
         disabled={disabled}
